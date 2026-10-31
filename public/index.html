@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PromptForge AI — Ultimate AI Prompt Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            DEFAULT: '#FFD700',
+                            dark: '#CCA600',
+                            light: '#FFE44D'
+                        },
+                        darksurface: '#121212',
+                        cardbg: '#1A1A1A',
+                        bordercol: '#2A2A2A'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-darksurface text-gray-100 min-h-screen font-sans antialiased flex flex-col justify-between selection:bg-gold selection:text-black">
+
+    <!-- Header -->
+    <header class="border-b border-bordercol bg-cardbg/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 rounded bg-gold flex items-center justify-center font-black text-black text-lg">P</div>
+                <span class="text-xl font-bold tracking-tight text-white">Prompt<span class="text-gold">Forge</span> AI</span>
+            </div>
+            <span class="text-xs uppercase tracking-widest px-2.5 py-1 rounded-full bg-gold/10 text-gold font-semibold border border-gold/20">Production Ready</span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto px-4 py-10 w-full flex-grow">
+        
+        <!-- Hero Section -->
+        <div class="text-center mb-10">
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4 text-white">
+                Craft Perfect Prompts for <span class="text-gold">Any AI Model</span>
+            </h1>
+            <p class="text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
+                Transform rough ideas into masterpiece prompts for Midjourney, Sora, ChatGPT book writing, and more.
+            </p>
+        </div>
+
+        <!-- Generator Card -->
+        <div class="bg-cardbg border border-bordercol rounded-2xl p-6 sm:p-8 shadow-2xl">
+            <form id="promptForm" class="space-y-6">
+                
+                <!-- Category Selectors -->
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-gray-400 mb-3 tracking-wider">1. Select Output Target</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <button type="button" data-category="image" class="cat-btn py-3 px-4 rounded-xl border border-gold bg-gold/10 text-gold font-medium text-sm transition text-center">🎨 AI Images</button>
+                        <button type="button" data-category="video" class="cat-btn py-3 px-4 rounded-xl border border-bordercol bg-darksurface text-gray-400 font-medium text-sm transition hover:border-gray-500 text-center">🎬 AI Video</button>
+                        <button type="button" data-category="book" class="cat-btn py-3 px-4 rounded-xl border border-bordercol bg-darksurface text-gray-400 font-medium text-sm transition hover:border-gray-500 text-center">📚 Book / Story</button>
+                        <button type="button" data-category="general" class="cat-btn py-3 px-4 rounded-xl border border-bordercol bg-darksurface text-gray-400 font-medium text-sm transition hover:border-gray-500 text-center">💡 General AI</button>
+                    </div>
+                    <input type="hidden" id="selectedCategory" value="image">
+                </div>
+
+                <!-- Idea Input -->
+                <div>
+                    <label for="idea" class="block text-xs uppercase font-semibold text-gray-400 mb-2 tracking-wider">2. What is your core idea?</label>
+                    <textarea id="idea" rows="3" required placeholder="e.g., A cybernetic samurai standing on a neon-lit Tokyo rooftop during heavy rainfall..." class="w-full bg-darksurface border border-bordercol rounded-xl p-4 text-white placeholder-gray-600 focus:outline-none focus:border-gold transition text-sm"></textarea>
+                </div>
+
+                <!-- Advanced Options Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="style" class="block text-xs uppercase font-semibold text-gray-400 mb-2 tracking-wider">Style / Tone Modifier</label>
+                        <input type="text" id="style" placeholder="e.g., Cyberpunk, Cinematic, Noir, Epic" class="w-full bg-darksurface border border-bordercol rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-gold transition text-sm">
+                    </div>
+                    <div>
+                        <label for="detailLevel" class="block text-xs uppercase font-semibold text-gray-400 mb-2 tracking-wider">Detail / Depth</label>
+                        <select id="detailLevel" class="w-full bg-darksurface border border-bordercol rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold transition text-sm">
+                            <option value="High">High Detail & Photorealistic</option>
+                            <option value="Balanced">Balanced Standard</option>
+                            <option value="Minimalist">Minimalist / Clean</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="submitBtn" class="w-full py-4 rounded-xl bg-gold text-black font-bold text-base hover:bg-gold-light transition shadow-lg shadow-gold/10 flex items-center justify-center space-x-2">
+                    <span>Forge Prompt</span>
+                </button>
+            </form>
+
+            <!-- Results Section (Hidden by Default) -->
+            <div id="resultsSection" class="hidden mt-8 pt-8 border-t border-bordercol space-y-6">
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs uppercase font-semibold text-gold tracking-wider">Optimized Prompt</span>
+                        <button onclick="copyToClipboard('optimizedText', this)" class="text-xs text-gray-400 hover:text-gold transition flex items-center space-x-1 bg-darksurface px-3 py-1.5 rounded-lg border border-bordercol">📋 Copy</button>
+                    </div>
+                    <div id="optimizedText" class="bg-darksurface border border-bordercol rounded-xl p-4 text-gray-200 text-sm font-mono leading-relaxed select-all"></div>
+                </div>
+
+                <div id="negativeWrapper">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs uppercase font-semibold text-red-400 tracking-wider">Negative Prompt (Exclusions)</span>
+                        <button onclick="copyToClipboard('negativeText', this)" class="text-xs text-gray-400 hover:text-gold transition flex items-center space-x-1 bg-darksurface px-3 py-1.5 rounded-lg border border-bordercol">📋 Copy</button>
+                    </div>
+                    <div id="negativeText" class="bg-darksurface border border-bordercol rounded-xl p-4 text-gray-400 text-sm font-mono select-all"></div>
+                </div>
+
+                <div>
+                    <span class="block text-xs uppercase font-semibold text-gray-400 mb-2 tracking-wider">Pro Tips for Best Results</span>
+                    <ul id="tipsList" class="space-y-2 text-sm text-gray-300 bg-darksurface border border-bordercol rounded-xl p-4"></ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-bordercol bg-cardbg py-6 text-center text-xs text-gray-500">
+        <p>&copy; 2026 PromptForge AI. Production Ready Architecture.</p>
+    </footer>
+
+    <!-- Frontend Script -->
+    <script>
+        // Category selection handlers
+        const catButtons = document.querySelectorAll('.cat-btn');
+        const selectedCategoryInput = document.getElementById('selectedCategory');
+
+        catButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                catButtons.forEach(b => {
+                    b.classList.remove('border-gold', 'bg-gold/10', 'text-gold');
+                    b.classList.add('border-bordercol', 'bg-darksurface', 'text-gray-400');
+                });
+                btn.classList.remove('border-bordercol', 'bg-darksurface', 'text-gray-400');
+                btn.classList.add('border-gold', 'bg-gold/10', 'text-gold');
+                selectedCategoryInput.value = btn.dataset.category;
+            });
+        });
+
+        // Form submission
+        document.getElementById('promptForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Engineering Prompt...';
+
+            const payload = {
+                category: selectedCategoryInput.value,
+                idea: document.getElementById('idea').value,
+                style: document.getElementById('style').value,
+                detailLevel: document.getElementById('detailLevel').value
+            };
+
+            try {
+                const res = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    document.getElementById('optimizedText').textContent = data.optimizedPrompt;
+                    
+                    const negWrapper = document.getElementById('negativeWrapper');
+                    if (data.negativePrompt) {
+                        negWrapper.style.display = 'block';
+                        document.getElementById('negativeText').textContent = data.negativePrompt;
+                    } else {
+                        negWrapper.style.display = 'none';
+                    }
+
+                    const tipsList = document.getElementById('tipsList');
+                    tipsList.innerHTML = data.tips.map(tip => `<li class="flex items-start space-x-2"><span class="text-gold">•</span><span>${tip}</span></li>`).join('');
+
+                    document.getElementById('resultsSection').classList.remove('hidden');
+                    document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    alert(data.error || 'Something went wrong.');
+                }
+            } catch (err) {
+                alert('Connection error. Please try again.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Forge Prompt';
+            }
+        });
+
+        // Copy helper
+        function copyToClipboard(elementId, btn) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = '✨ Copied!';
+                btn.classList.add('text-gold', 'border-gold');
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('text-gold', 'border-gold');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
