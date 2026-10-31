@@ -126,8 +126,10 @@
         <p>&copy; 2026 PromptForge AI. Production Ready Architecture.</p>
     </footer>
 
-    <!-- Frontend Script -->
-    <script>
+        <script>
+        // Automatically determine API URL: use your live Cloudflare URL if inside mobile app, otherwise relative path
+        const API_BASE_URL = window.Capacitor ? 'https://promptforge-ai.promptforge-ai.workers.dev' : '';
+
         // Category selection handlers
         const catButtons = document.querySelectorAll('.cat-btn');
         const selectedCategoryInput = document.getElementById('selectedCategory');
@@ -159,7 +161,8 @@
             };
 
             try {
-                const res = await fetch('/api/generate', {
+                // Uses API_BASE_URL so it works seamlessly on both Web and Mobile Apps
+                const res = await fetch(`${API_BASE_URL}/api/generate`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
